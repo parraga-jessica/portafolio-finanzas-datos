@@ -1,0 +1,17 @@
+# Credenciales y secretos
+*.env
+credenciales*
+*secreto*
+
+# Datos reales de empresas (nunca al portafolio publico)
+datos-reales/
+confidencial/
+
+# Basura de Office y Windows
+~$*
+Thumbs.db
+.DS_Store
+
+# Archivos pesados
+*.zip
+*.bak
