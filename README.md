@@ -10,6 +10,7 @@ Este repositorio documenta los proyectos que voy desarrollando: modelos de Excel
 |---|---|
 | `00-setup/` | Punto de partida y análisis de vacantes |
 | `01-hojas-calculo/` | Modelos en Excel y Power Query |
+| ↳ [`F1-T06-pyg-desde-mayor/`](01-hojas-calculo/F1-T06-pyg-desde-mayor/) | Estado de Resultados trimestral construido desde un libro mayor con `SUMIFS` parametrizado |
 | `02-sql/` | Consultas y análisis sobre base de datos |
 | `03-bi/` | Tableros e informes de BI |
 | `04-automatizacion/` | Flujos automatizados |
@@ -31,4 +32,4 @@ Este repositorio documenta los proyectos que voy desarrollando: modelos de Excel
 
 ---
 
-*En construcción. Última actualización: agosto 2026.*
+*En construcción. Última actualización: septiembre 2026.*

@@ -1,0 +1,40 @@
+fecha,cuenta,nombre_cuenta,tercero,valor
+05/07/2026,4135,Comercio al por mayor,Panaderia El Trigal,45000000
+14/07/2026,4135,Comercio al por mayor,Distribuciones Munoz,38000000
+28/07/2026,4135,Comercio al por mayor,Cafeteria La Esquina,22000000
+30/07/2026,4175,Devoluciones en ventas,Panaderia El Trigal,-2000000
+31/07/2026,6135,Costo de ventas,Varios,-63000000
+31/07/2026,5105,Gastos de personal administracion,Nomina,-12000000
+31/07/2026,5205,Gastos de personal ventas,Nomina,-8000000
+10/07/2026,5110,Honorarios,Contador Externo,-2500000
+01/07/2026,5120,Arrendamientos,Inmobiliaria Andes,-4000000
+20/07/2026,5135,Servicios,Empresas Publicas,-1800000
+31/07/2026,5160,Depreciaciones,Ajuste mensual,-3000000
+31/07/2026,5305,Gastos financieros,Banco Bogota,-2200000
+04/08/2026,4135,Comercio al por mayor,Almacenes Jose Leon,52000000
+18/08/2026,4135,Comercio al por mayor,Comercializadora Pena,41000000
+26/08/2026,4135,Comercio al por mayor,Cafeteria La Esquina,19000000
+22/08/2026,4135,Comercio al por mayor,Distribuciones Munoz,8000000
+29/08/2026,4175,Devoluciones en ventas,Comercializadora Pena,-3500000
+31/08/2026,6135,Costo de ventas,Varios,-68000000
+31/08/2026,5105,Gastos de personal administracion,Nomina,-12000000
+31/08/2026,5205,Gastos de personal ventas,Nomina,-8000000
+10/08/2026,5110,Honorarios,Contador Externo,-2500000
+01/08/2026,5120,Arrendamientos,Inmobiliaria Andes,-4000000
+20/08/2026,5135,Servicios,Empresas Publicas,-2100000
+31/08/2026,5160,Depreciaciones,Ajuste mensual,-3000000
+31/08/2026,5305,Gastos financieros,Banco Bogota,-2400000
+12/08/2026,1524,Equipo de oficina,Computadores SAS,-15000000
+03/09/2026,4135,Comercio al por mayor,Panaderia El Trigal,48000000
+16/09/2026,4135,Comercio al por mayor,Distribuciones Munoz,35000000
+27/09/2026,4135,Comercio al por mayor,Almacenes Jose Leon,25000000
+30/09/2026,4175,Devoluciones en ventas,Cafeteria La Esquina,-1200000
+30/09/2026,6135,Costo de ventas,Varios,-64000000
+30/09/2026,5105,Gastos de personal administracion,Nomina,-12500000
+30/09/2026,5205,Gastos de personal ventas,Nomina,-8400000
+10/09/2026,5110,Honorarios,Contador Externo,-2500000
+01/09/2026,5120,Arrendamientos,Inmobiliaria Andes,-4000000
+20/09/2026,5135,Servicios,Empresas Publicas,-1950000
+30/09/2026,5160,Depreciaciones,Ajuste mensual,-3000000
+30/09/2026,5305,Gastos financieros,Banco Bogota,-2600000
+25/09/2026,2205,Proveedores nacionales,Varios,-20000000
