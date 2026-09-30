@@ -12,6 +12,8 @@ Este repositorio documenta los proyectos que voy desarrollando: modelos de Excel
 | `01-hojas-calculo/` | Modelos en Excel y Power Query |
 | ↳ [`F1-T06-pyg-desde-mayor/`](01-hojas-calculo/F1-T06-pyg-desde-mayor/) | Estado de Resultados trimestral construido desde un libro mayor con `SUMIFS` parametrizado |
 | `02-sql/` | Consultas y análisis sobre base de datos |
+| ↳ [`00-entorno/`](02-sql/00-entorno/) | Montaje de PostgreSQL 18 y DBeaver: instalación, conexión y carga de datos |
+| ↳ [`01-aging-cartera/`](02-sql/01-aging-cartera/) | Aging de cartera en SQL: clasificación por antigüedad, provisión parametrizada y controles de calidad |
 | `03-bi/` | Tableros e informes de BI |
 | `04-automatizacion/` | Flujos automatizados |
 | `05-ia/` | Aplicaciones de IA a procesos financieros |
