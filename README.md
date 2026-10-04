@@ -18,6 +18,7 @@ Este repositorio documenta los proyectos que voy desarrollando: modelos de Excel
 | `03-bi/` | Tableros e informes de BI |
 | ↳ [`01-tablero-cartera/`](03-bi/01-tablero-cartera/) | Tablero de cartera en Power BI, conectado a PostgreSQL con filtrado cruzado |
 | `04-automatizacion/` | Flujos automatizados |
+| ↳ [`01-alerta-facturas/`](04-automatizacion/01-alerta-facturas/) | Flujo en n8n que avisa por correo de las facturas próximas a vencer |
 | `05-ia/` | Aplicaciones de IA a procesos financieros |
 | `capstone/` | Proyecto final integrador |
 
