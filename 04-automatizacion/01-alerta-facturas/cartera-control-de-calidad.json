@@ -1,19 +1,19 @@
 {
-  "name": "Alerta de facturas próximas a vencer",
+  "name": "Cartera control de calidad",
   "nodes": [
     {
       "parameters": {
         "operation": "executeQuery",
-        "query": "SELECT\n    factura,\n    cliente,\n    fecha_vencimiento,\n    saldo,\n    dias_mora\nFROM v_cartera_detalle\nWHERE dias_mora BETWEEN -5 AND 0\n  AND saldo > 0\nORDER BY fecha_vencimiento;",
+        "query": "SELECT 'Factura sin cliente en maestro' AS control,\n       c.factura AS documento,\n       c.valor   AS monto\nFROM cartera c\nLEFT JOIN clientes cl ON c.cliente = cl.nombre\nWHERE cl.nombre IS NULL\nUNION ALL\nSELECT 'Pago sin factura asociada',\n       p.factura,\n       p.valor_pago\nFROM pagos p\nLEFT JOIN cartera c ON p.factura = c.factura\nWHERE c.factura IS NULL\nUNION ALL\nSELECT 'Factura sin tramo asignado',\n       factura,\n       valor\nFROM v_cartera_detalle\nWHERE tramo IS NULL;",
         "options": {}
       },
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.7,
       "position": [
-        -272,
-        -160
+        -336,
+        -144
       ],
-      "id": "b2485777-9e65-4f36-98d7-cdd4d3447110",
+      "id": "d6a28699-cada-44c4-bb8d-48670c5a618e",
       "name": "Execute a SQL query",
       "credentials": {
         "postgres": {
@@ -30,36 +30,11 @@
       "type": "n8n-nodes-base.aggregate",
       "typeVersion": 1,
       "position": [
-        -128,
-        -160
+        -192,
+        -192
       ],
-      "id": "b1c1a843-b356-4c4b-b6be-d2525ed6d668",
+      "id": "d13cc793-7b70-4bb2-a4ef-a06dab99a5e9",
       "name": "Aggregate"
-    },
-    {
-      "parameters": {
-        "fromEmail": "parraga1palacios@gmail.com",
-        "toEmail": "parragapalacios@gmail.com",
-        "subject": "Facturas próximas a vencer",
-        "emailFormat": "=text",
-        "text": "=Hola,\n\nLas siguientes facturas vencen en los próximos 5 días:\n\n{{ $json.data.map(f => '- ' + f.factura + ' | ' + f.cliente + ' | vence: ' + f.fecha_vencimiento + ' | saldo: $' + f.saldo).join('\\n') }}\n\nTotal: {{ $json.data.length }} facturas.\n\n-- Enviado automáticamente desde n8n",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.emailSend",
-      "typeVersion": 2.1,
-      "position": [
-        256,
-        -176
-      ],
-      "id": "f8a81e75-653d-4e4d-be0a-5e76f042d692",
-      "name": "Send an Email",
-      "webhookId": "17a48a62-03ef-4e51-942e-ffd3141b4f9d",
-      "credentials": {
-        "smtp": {
-          "id": "Y9phaxwAU3xdZE74",
-          "name": "SMTP account"
-        }
-      }
     },
     {
       "parameters": {
@@ -72,12 +47,13 @@
           },
           "conditions": [
             {
-              "id": "d7e59018-232c-4694-9de5-9e30de01017c",
-              "leftValue": "={{ $json.data.length }} ",
+              "id": "51022376-7081-4b1e-93e6-f3aa7deb8eed",
+              "leftValue": "={{$json.data}}",
               "rightValue": 0,
               "operator": {
-                "type": "number",
-                "operation": "gt"
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
               }
             }
           ],
@@ -89,18 +65,44 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        48,
-        -160
+        -48,
+        -208
       ],
-      "id": "d5fe2b5a-dc8d-4cf5-b608-c49e4c173aa7",
+      "id": "77439873-d155-4424-a2c9-b891749e972a",
       "name": "If"
+    },
+    {
+      "parameters": {
+        "fromEmail": "parraga1palacios@gmail.com",
+        "toEmail": "parragapalacios@gmail.com",
+        "subject": "Control de calidad de cartera — hallazgos detectados",
+        "emailFormat": "=text",
+        "text": "=Control de calidad de datos — hallazgos\n\n{{ $json.data.map(f => '- ' + f.control + ' | ' + f.documento + ' | $' + f.monto).join('\\n') }}\n\nTotal: {{ $json.data.length }} hallazgos.\nRevisar antes de ejecutar los flujos de cobro.",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        176,
+        -240
+      ],
+      "id": "33fa2ad7-df6e-4730-a83d-d59450c8bac2",
+      "name": "Send an Email",
+      "webhookId": "67746738-994a-425a-bc52-fe686b8129a9",
+      "credentials": {
+        "smtp": {
+          "id": "Y9phaxwAU3xdZE74",
+          "name": "SMTP account"
+        }
+      }
     },
     {
       "parameters": {
         "rule": {
           "interval": [
             {
-              "triggerAtHour": 8
+              "triggerAtHour": 7,
+              "triggerAtMinute": 30
             }
           ]
         }
@@ -108,10 +110,10 @@
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.4,
       "position": [
-        -480,
-        -160
+        -544,
+        -144
       ],
-      "id": "58f4dbe7-2e8a-43d4-84a7-433d158e1db9",
+      "id": "42e25e18-9a67-4bbd-ad37-592d0eab29a3",
       "name": "Schedule Trigger"
     }
   ],
@@ -147,7 +149,8 @@
             "type": "main",
             "index": 0
           }
-        ]
+        ],
+        []
       ]
     },
     "Schedule Trigger": {
@@ -162,17 +165,17 @@
       ]
     }
   },
-  "active": false,
+  "active": true,
   "settings": {
     "executionOrder": "v1",
     "binaryMode": "separate"
   },
-  "versionId": "f2c63e84-e035-4814-9c0b-11784d573f29",
+  "versionId": "14352ff0-4a66-4079-bf7b-7806f99c6347",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "f0a8a2e6ac669c804f7216049fe2e57f1d16324308e17f9eb5cebb07ab9a0290"
   },
   "nodeGroups": [],
-  "id": "sxKqOqel0T9nwQe5",
+  "id": "LAtPZCcXSMkvSxjF",
   "tags": []
 }

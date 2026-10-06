@@ -1,0 +1,182 @@
+{
+  "name": "Cartera vencimiento proximo",
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT\n    factura,\n    cliente,\n    fecha_vencimiento,\n    fecha_vencimiento - CURRENT_DATE AS dias_restantes,\n    saldo\nFROM v_cartera_detalle\nWHERE fecha_vencimiento BETWEEN CURRENT_DATE AND CURRENT_DATE + 5\n  AND saldo > 0\nORDER BY fecha_vencimiento;",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.7,
+      "position": [
+        -272,
+        -160
+      ],
+      "id": "b2485777-9e65-4f36-98d7-cdd4d3447110",
+      "name": "Execute a SQL query",
+      "credentials": {
+        "postgres": {
+          "id": "SAHPLuxqSV9DoaKM",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        -128,
+        -160
+      ],
+      "id": "b1c1a843-b356-4c4b-b6be-d2525ed6d668",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "fromEmail": "parraga1palacios@gmail.com",
+        "toEmail": "parragapalacios@gmail.com",
+        "subject": "Facturas próximas a vencer",
+        "emailFormat": "=text",
+        "text": "=Hola,\n\nLas siguientes facturas vencen en los próximos 5 días:\n\n{{ $json.data.map(f => '- ' + f.factura + ' | ' + f.cliente + ' | vence: ' + f.fecha_vencimiento + ' | saldo: $' + f.saldo).join('\\n') }}\n\nTotal: {{ $json.data.length }} facturas.\n\n-- Enviado automáticamente desde n8n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        256,
+        -176
+      ],
+      "id": "f8a81e75-653d-4e4d-be0a-5e76f042d692",
+      "name": "Send an Email",
+      "webhookId": "17a48a62-03ef-4e51-942e-ffd3141b4f9d",
+      "credentials": {
+        "smtp": {
+          "id": "Y9phaxwAU3xdZE74",
+          "name": "SMTP account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "d7e59018-232c-4694-9de5-9e30de01017c",
+              "leftValue": "={{$json.data.length}} \n",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        48,
+        -160
+      ],
+      "id": "d5fe2b5a-dc8d-4cf5-b608-c49e4c173aa7",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 8
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -480,
+        -160
+      ],
+      "id": "58f4dbe7-2e8a-43d4-84a7-433d158e1db9",
+      "name": "Schedule Trigger"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Execute a SQL query": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Send an Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Execute a SQL query",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "timeSavedMode": "fixed",
+    "timezone": "America/Bogota",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
+  },
+  "versionId": "4ff3616e-a227-4ac3-b596-9763e9327685",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "f0a8a2e6ac669c804f7216049fe2e57f1d16324308e17f9eb5cebb07ab9a0290"
+  },
+  "nodeGroups": [],
+  "id": "sxKqOqel0T9nwQe5",
+  "tags": []
+}

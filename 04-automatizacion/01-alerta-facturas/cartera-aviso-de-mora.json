@@ -1,0 +1,178 @@
+{
+  "name": "Cartera aviso de mora",
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT\n    c.factura,\n    c.cliente,\n    c.fecha_vencimiento,\n    CURRENT_DATE - c.fecha_vencimiento AS dias_mora,\n    c.valor,\n    r.tramo\nFROM cartera c\nJOIN rangos_mora r\n    ON (CURRENT_DATE - c.fecha_vencimiento) BETWEEN r.dia_desde AND r.dia_hasta\nWHERE c.fecha_vencimiento < CURRENT_DATE\n  AND c.estado <> 'NOTA DE CREDITO'\nORDER BY dias_mora DESC;",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.7,
+      "position": [
+        -80,
+        -16
+      ],
+      "id": "d7c63100-3dbf-47e8-af09-8a5054d6997f",
+      "name": "Execute a SQL query",
+      "credentials": {
+        "postgres": {
+          "id": "SAHPLuxqSV9DoaKM",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        128,
+        -16
+      ],
+      "id": "2e3dee98-bb37-4808-b412-1386957340ec",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "01f833e1-9045-4d3e-aa46-b464d3d6d97a",
+              "leftValue": "={{$json.data.length}} ",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        352,
+        -16
+      ],
+      "id": "128d3c8f-f4fa-4cc8-ab9e-7e0419116cd0",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "fromEmail": "parraga1palacios@gmail.com",
+        "toEmail": "parragapalacios@gmail.com",
+        "subject": "Cartera vencida al 05/10/2026",
+        "emailFormat": "text",
+        "text": "=Reporte de cartera vencida\n\n{{ $json.data.map(f => f.factura + ' | ' + f.cliente + ' | ' + f.dias_mora + ' dias | $' + f.valor + ' | ' + f.tramo).join('\\n') }}\n\nTotal: {{ $json.data.length }} facturas vencidas.\nRevisar antes de contactar a los clientes.",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        576,
+        -112
+      ],
+      "id": "57c1f909-0561-4129-93b9-fc34df4ffb3f",
+      "name": "Send an Email",
+      "webhookId": "6979eee1-336e-465a-89e8-e431adab422f",
+      "credentials": {
+        "smtp": {
+          "id": "Y9phaxwAU3xdZE74",
+          "name": "SMTP account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 8
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -288,
+        -128
+      ],
+      "id": "045f4e75-d86a-4c4b-8573-515b0e5e9c30",
+      "name": "Schedule Trigger"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Execute a SQL query": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Send an Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Execute a SQL query",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "1c391239-b7b2-4fba-9dc5-abecd3f69b7f",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "f0a8a2e6ac669c804f7216049fe2e57f1d16324308e17f9eb5cebb07ab9a0290"
+  },
+  "nodeGroups": [],
+  "id": "DRlB3rRoD0cpQvNt",
+  "tags": []
+}
