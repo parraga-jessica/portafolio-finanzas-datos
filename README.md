@@ -18,7 +18,8 @@ Este repositorio documenta los proyectos que voy desarrollando: modelos de Excel
 | `03-bi/` | Tableros e informes de BI |
 | ↳ [`01-tablero-cartera/`](03-bi/01-tablero-cartera/) | Tablero de cartera en Power BI, conectado a PostgreSQL con filtrado cruzado |
 | `04-automatizacion/` | Flujos automatizados |
-| ↳ [`01-alerta-facturas/`](04-automatizacion/01-alerta-facturas/) | Flujo en n8n que avisa por correo de las facturas próximas a vencer |
+| ↳ [`01-alerta-facturas/`](04-automatizacion/01-alerta-facturas/) | Tres flujos en n8n que avisan por correo de vencimientos, mora y errores en los datos de cartera |
+| ↳ [`02-trm-diaria/`](04-automatizacion/02-trm-diaria/) | Flujo en n8n que consulta la TRM en la API de datos abiertos de Colombia y la envía cada mañana |
 | `05-ia/` | Aplicaciones de IA a procesos financieros |
 | `capstone/` | Proyecto final integrador |
 
@@ -37,4 +38,4 @@ Este repositorio documenta los proyectos que voy desarrollando: modelos de Excel
 
 ---
 
-*En construcción. Última actualización: septiembre 2026.*
+*En construcción. Última actualización: octubre 2026.*

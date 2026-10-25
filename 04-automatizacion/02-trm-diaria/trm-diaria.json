@@ -1,0 +1,108 @@
+{
+  "name": "TRM DIARIO",
+  "nodes": [
+    {
+      "parameters": {
+        "url": "https://www.datos.gov.co/resource/32sa-8pi3.json?$limit=1&$order=vigenciadesde%20DESC",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        -208,
+        -144
+      ],
+      "id": "5db77c24-001a-4a01-ace0-e0b283de9298",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "fromEmail": "PARRAGA1PALACIOS@GMAIL.COM",
+        "toEmail": "parragapalacios@gmail.com",
+        "subject": "TRM de hoy",
+        "emailFormat": "text",
+        "text": "=La TRM vigente es: ${{ Number($json.valor).toLocaleString('es-CO') }}\nVigente del {{ $json.vigenciadesde.slice(0, 10) }} al {{ $json.vigenciahasta.slice(0, 10) }}.\n\n1.000 dólares equivalen a ${{ (Number($json.valor) * 1000).toLocaleString('es-CO') }} pesos.",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        16,
+        -144
+      ],
+      "id": "350637fa-beda-45fa-8945-92e2aa9cf2f4",
+      "name": "Send an Email",
+      "webhookId": "06ddf03d-0f20-4afa-9f66-0e384fb0495e",
+      "credentials": {
+        "smtp": {
+          "id": "Y9phaxwAU3xdZE74",
+          "name": "SMTP account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 8
+            },
+            {}
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -400,
+        -144
+      ],
+      "id": "53532d59-05d4-4b35-b0c6-da5dab46d7b1",
+      "name": "Schedule Trigger"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Send an Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "timeSavedMode": "fixed",
+    "timezone": "America/Bogota",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
+  },
+  "versionId": "0f7b4e56-b4a2-43d4-9ba9-ed0d23daa79e",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "f0a8a2e6ac669c804f7216049fe2e57f1d16324308e17f9eb5cebb07ab9a0290"
+  },
+  "nodeGroups": [],
+  "id": "MU3cFkqB5Nt29QHO",
+  "tags": []
+}
